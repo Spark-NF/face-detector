@@ -156,8 +156,8 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>147</x>
-     <y>65</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>199</x>
@@ -213,10 +213,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionImage</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openImageDialog()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openWebcamDialog()</slot>
   <slot>addPicture()</slot>
   <slot>addPerson()</slot>
+  <slot>openImageDialog()</slot>
  </slots>
 </ui>

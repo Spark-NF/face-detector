@@ -2,7 +2,6 @@
 #include "ui_webcamdialog.h"
 #include "cvqt.h"
 #include <QFileDialog>
-#include <QDebug>
 #include <opencv2/objdetect/objdetect.hpp>
 
 WebcamDialog::WebcamDialog(QList<Person*> *persons, QWidget *parent)
@@ -82,7 +81,7 @@ void WebcamDialog::updatePicture()
         for (size_t i = 0; i < faces.size(); i++)
         {
             cv::Rect face_i = faces[i];
-            if (!imageSize.isNull() && false)
+            if (!imageSize.isNull())
             {
                 cv::Mat face = grayscaleFrame(face_i);
                 cv::Mat face_resized;

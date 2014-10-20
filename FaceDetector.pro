@@ -32,7 +32,8 @@ SOURCES += main.cpp \
     addpersondialog.cpp \
     addpicturedialog.cpp \
     person.cpp \
-    aspectratiopixmaplabel.cpp
+    aspectratiopixmaplabel.cpp \
+    imagedialog.cpp
 
 HEADERS  += mainwindow.h \
     webcamdialog.h \
@@ -40,9 +41,11 @@ HEADERS  += mainwindow.h \
     addpersondialog.h \
     addpicturedialog.h \
     person.h \
-    aspectratiopixmaplabel.h
+    aspectratiopixmaplabel.h \
+    imagedialog.h
 
 FORMS    += mainwindow.ui \
     webcamdialog.ui \
     addpersondialog.ui \
-    addpicturedialog.ui
+    addpicturedialog.ui \
+    imagedialog.ui

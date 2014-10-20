@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "webcamdialog.h"
+#include "imagedialog.h"
 #include "addpersondialog.h"
 #include "addpicturedialog.h"
 #include <QFile>
@@ -39,11 +40,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::openImageDialog()
+{
+    QString file = QFileDialog::getOpenFileName(this);
+    ImageDialog *imageDialog = new ImageDialog(file, &persons, this);
+    imageDialog->show();
+}
 void MainWindow::openWebcamDialog()
 {
     WebcamDialog *webcamDialog = new WebcamDialog(&persons, this);
     webcamDialog->show();
 }
+
 void MainWindow::addPerson()
 {
     AddPersonDialog *addPersonDialog = new AddPersonDialog(&persons, this);
