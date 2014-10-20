@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>FaceDetector</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTableWidget" name="tablePersons">
+      <attribute name="horizontalHeaderVisible">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>ID</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Pictures</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>Add person</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Add picture</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>400</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuOuvrir">
+    <property name="title">
+     <string>&amp;Open</string>
+    </property>
+    <addaction name="actionImage"/>
+    <addaction name="actionVid_o"/>
+    <addaction name="separator"/>
+    <addaction name="actionWebcam"/>
+   </widget>
+   <widget class="QMenu" name="menu_propos">
+    <property name="title">
+     <string>&amp;About</string>
+    </property>
+    <addaction name="action_propos_de_FaceDetected"/>
+    <addaction name="action_propos_de_Qt"/>
+   </widget>
+   <widget class="QMenu" name="menuFichier">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionOptions"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuitter"/>
+   </widget>
+   <addaction name="menuFichier"/>
+   <addaction name="menuOuvrir"/>
+   <addaction name="menu_propos"/>
+  </widget>
+  <action name="actionWebcam">
+   <property name="text">
+    <string>&amp;Webcam</string>
+   </property>
+  </action>
+  <action name="actionImage">
+   <property name="text">
+    <string>&amp;Image</string>
+   </property>
+  </action>
+  <action name="actionVid_o">
+   <property name="text">
+    <string>&amp;Video</string>
+   </property>
+  </action>
+  <action name="action_propos_de_FaceDetected">
+   <property name="text">
+    <string>About &amp;FaceDetector</string>
+   </property>
+  </action>
+  <action name="action_propos_de_Qt">
+   <property name="text">
+    <string>About &amp;Qt</string>
+   </property>
+  </action>
+  <action name="actionQuitter">
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+  </action>
+  <action name="actionOptions">
+   <property name="text">
+    <string>&amp;Settings</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>actionQuitter</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>147</x>
+     <y>65</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionWebcam</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openWebcamDialog()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addPerson()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>261</x>
+     <y>283</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>221</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addPicture()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>335</x>
+     <y>276</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>393</x>
+     <y>277</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>openWebcamDialog()</slot>
+  <slot>addPicture()</slot>
+  <slot>addPerson()</slot>
+ </slots>
+</ui>
