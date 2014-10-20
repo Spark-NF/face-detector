@@ -6,7 +6,7 @@
 #include <opencv2/objdetect/objdetect.hpp>
 
 WebcamDialog::WebcamDialog(QList<Person*> *persons, QWidget *parent)
-    : QDialog(parent), ui(new Ui::WebcamDialog), captureDevice(0), _persons(persons)
+    : QDialog(parent), ui(new Ui::WebcamDialog), _persons(persons)
 {
     ui->setupUi(this);
 
@@ -27,7 +27,18 @@ WebcamDialog::WebcamDialog(QList<Person*> *persons, QWidget *parent)
         faceRecognizer->train(images, labels);
     }
 
+    cv::VideoCapture tmp;
+    for (int i = 0; i < 10; ++i)
+    {
+        tmp.open(i);
+        bool res = tmp.isOpened();
+        tmp.release();
+        if (res)
+            ui->comboWebcams->addItem(QString::number(i));
+    }
+
     faceCascade.load("data/haarcascade_frontalface_alt.xml");
+    captureDevice.open(0);
 
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &WebcamDialog::updatePicture);
@@ -37,6 +48,16 @@ WebcamDialog::WebcamDialog(QList<Person*> *persons, QWidget *parent)
 WebcamDialog::~WebcamDialog()
 {
     delete ui;
+}
+
+void WebcamDialog::setInterval(int interval)
+{
+    timer->setInterval(interval);
+}
+void WebcamDialog::setWebcam(int webcam)
+{
+    captureDevice.release();
+    captureDevice.open(webcam);
 }
 
 void WebcamDialog::screenshot()
@@ -61,7 +82,7 @@ void WebcamDialog::updatePicture()
         for (size_t i = 0; i < faces.size(); i++)
         {
             cv::Rect face_i = faces[i];
-            if (!imageSize.isNull())
+            if (!imageSize.isNull() && false)
             {
                 cv::Mat face = grayscaleFrame(face_i);
                 cv::Mat face_resized;

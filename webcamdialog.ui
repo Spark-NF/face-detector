@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>498</width>
+    <height>394</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,6 +48,25 @@
       <number>9</number>
      </property>
      <item>
+      <widget class="QComboBox" name="comboWebcams"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinInterval">
+       <property name="toolTip">
+        <string>Interval between two image updates. Defaults to 33ms (30 fps).</string>
+       </property>
+       <property name="suffix">
+        <string>ms</string>
+       </property>
+       <property name="maximum">
+        <number>5000</number>
+       </property>
+       <property name="value">
+        <number>33</number>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -61,14 +80,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="buttonScreenshot">
        <property name="text">
         <string>Take screenshot</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="buttonClose">
        <property name="text">
         <string>Close</string>
        </property>
@@ -79,20 +98,20 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>pushButton_2</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>buttonScreenshot</tabstop>
+  <tabstop>buttonClose</tabstop>
  </tabstops>
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton</sender>
+   <sender>buttonClose</sender>
    <signal>clicked()</signal>
    <receiver>WebcamDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>368</x>
-     <y>283</y>
+     <x>466</x>
+     <y>377</y>
     </hint>
     <hint type="destinationlabel">
      <x>394</x>
@@ -101,14 +120,14 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>buttonScreenshot</sender>
    <signal>clicked()</signal>
    <receiver>WebcamDialog</receiver>
    <slot>screenshot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>290</x>
-     <y>277</y>
+     <x>388</x>
+     <y>371</y>
     </hint>
     <hint type="destinationlabel">
      <x>295</x>
@@ -116,8 +135,42 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>spinInterval</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>WebcamDialog</receiver>
+   <slot>setInterval(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>109</x>
+     <y>372</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>57</x>
+     <y>281</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboWebcams</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>WebcamDialog</receiver>
+   <slot>setWebcam(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>33</x>
+     <y>369</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>46</x>
+     <y>355</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>screenshot()</slot>
+  <slot>setInterval(int)</slot>
+  <slot>setWebcam(int)</slot>
  </slots>
 </ui>

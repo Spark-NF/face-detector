@@ -20,6 +20,8 @@ public:
     ~WebcamDialog();
 
 public slots:
+    void setInterval(int interval);
+    void setWebcam(int webcam);
     void updatePicture();
     void screenshot();
 
