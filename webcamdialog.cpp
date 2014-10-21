@@ -2,10 +2,11 @@
 #include "ui_webcamdialog.h"
 #include "cvqt.h"
 #include <QFileDialog>
+#include <QMessageBox>
 #include <opencv2/objdetect/objdetect.hpp>
 
 WebcamDialog::WebcamDialog(QList<Person*> *persons, QWidget *parent)
-    : QDialog(parent), ui(new Ui::WebcamDialog), _persons(persons)
+    : QDialog(parent), ui(new Ui::WebcamDialog), _persons(persons), _recording(false), _started(false)
 {
     ui->setupUi(this);
 
@@ -38,6 +39,7 @@ WebcamDialog::WebcamDialog(QList<Person*> *persons, QWidget *parent)
 
     faceCascade.load("data/haarcascade_frontalface_alt.xml");
     captureDevice.open(0);
+    setStarted(false);
 
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &WebcamDialog::updatePicture);
@@ -49,6 +51,13 @@ WebcamDialog::~WebcamDialog()
     delete ui;
 }
 
+void WebcamDialog::setStarted(bool started)
+{
+    _started = started;
+    ui->buttonRecord->setEnabled(_started);
+    ui->buttonScreenshot->setEnabled(_started);
+}
+
 void WebcamDialog::setInterval(int interval)
 {
     timer->setInterval(interval);
@@ -57,13 +66,48 @@ void WebcamDialog::setWebcam(int webcam)
 {
     captureDevice.release();
     captureDevice.open(webcam);
+    setStarted(false);
 }
 
 void WebcamDialog::screenshot()
 {
+    if (!_started)
+        return;
     QPixmap screenshot = ui->webcamLabel->pixmap()->copy();
     QString file = QFileDialog::getSaveFileName(this);
     screenshot.save(file);
+}
+void WebcamDialog::toggleRecord()
+{
+    if (!_started)
+        return;
+    if (_recording)
+    {
+        _recording = false;
+        _record.release();
+        QString file = QFileDialog::getSaveFileName(this);
+        QFile::rename("out.avi", file);
+        ui->buttonRecord->setText("Record");
+        ui->comboWebcams->setEnabled(true);
+        ui->spinInterval->setEnabled(true);
+    }
+    else
+    {
+        int frame_width = captureDevice.get(CV_CAP_PROP_FRAME_WIDTH);
+        int frame_height = captureDevice.get(CV_CAP_PROP_FRAME_HEIGHT);
+        _record = cv::VideoWriter("out.avi", CV_FOURCC('i','Y','U','V'), 20, cv::Size(frame_width, frame_height), true);
+        if (!_record.isOpened())
+            _record = cv::VideoWriter("out.avi", -1, 20, cv::Size(frame_width, frame_height), true);
+        if (_record.isOpened())
+        {
+            _recording = true;
+            ui->buttonRecord->setText("Stop");
+            ui->comboWebcams->setEnabled(false);
+            ui->spinInterval->setEnabled(false);
+        }
+        else
+            QMessageBox::critical(this, "Error", "Could not open destination file with selected codec.");
+    }
 }
 
 void WebcamDialog::updatePicture()
@@ -73,6 +117,9 @@ void WebcamDialog::updatePicture()
 
     if (!captureFrame.empty())
     {
+        if (!_started)
+            setStarted(true);
+
         cv::cvtColor(captureFrame, grayscaleFrame, CV_BGR2GRAY);
         cv::equalizeHist(grayscaleFrame, grayscaleFrame);
 
@@ -98,6 +145,9 @@ void WebcamDialog::updatePicture()
             }
             cv::rectangle(captureFrame, face_i, cvScalar(0, 255, 0, 0), 1, 8, 0);
         }
+
+        if (_recording)
+            _record.write(captureFrame);
 
         ui->webcamLabel->setPixmap(cvMatToQPixmap(captureFrame));
     }

@@ -12,6 +12,7 @@ data/pictures.csv
 *.ilk
 *.manifest
 *.exe_manifest.rc
+*.avi
 
 
 ## Qt

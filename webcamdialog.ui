@@ -82,7 +82,14 @@
      <item>
       <widget class="QPushButton" name="buttonScreenshot">
        <property name="text">
-        <string>Take screenshot</string>
+        <string>Screenshot</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonRecord">
+       <property name="text">
+        <string>Record</string>
        </property>
       </widget>
      </item>
@@ -99,7 +106,6 @@
  </widget>
  <tabstops>
   <tabstop>buttonScreenshot</tabstop>
-  <tabstop>buttonClose</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -126,8 +132,8 @@
    <slot>screenshot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>388</x>
-     <y>371</y>
+     <x>326</x>
+     <y>384</y>
     </hint>
     <hint type="destinationlabel">
      <x>295</x>
@@ -167,10 +173,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonRecord</sender>
+   <signal>clicked()</signal>
+   <receiver>WebcamDialog</receiver>
+   <slot>toggleRecord()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>352</x>
+     <y>367</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>361</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>screenshot()</slot>
   <slot>setInterval(int)</slot>
   <slot>setWebcam(int)</slot>
+  <slot>toggleRecord()</slot>
  </slots>
 </ui>

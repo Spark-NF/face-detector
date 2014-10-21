@@ -24,6 +24,8 @@ public slots:
     void setWebcam(int webcam);
     void updatePicture();
     void screenshot();
+    void toggleRecord();
+    void setStarted(bool started);
 
 private:
     Ui::WebcamDialog *ui;
@@ -33,6 +35,9 @@ private:
     cv::Ptr<cv::FaceRecognizer> faceRecognizer;
     QList<Person*> *_persons;
     QSize imageSize;
+    cv::VideoWriter _record;
+    bool _recording;
+    bool _started;
 };
 
 #endif // WEBCAMDIALOG_H
