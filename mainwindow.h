@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSignalMapper>
+#include <QPushButton>
 #include "person.h"
 
 namespace Ui {
@@ -25,12 +27,14 @@ class MainWindow : public QMainWindow
         void openImageDialog();
         void addPerson();
         void addPersonDone(Person *person);
-        void addPicture();
         void addPictureDone(Person *person, QString file);
+        void editPerson(int id);
 
     private:
         Ui::MainWindow *ui;
         QList<Person*> persons;
+        QList<QPushButton*> editButtons;
+        QSignalMapper *editMapper;
 };
 
 #endif // MAINWINDOW_H

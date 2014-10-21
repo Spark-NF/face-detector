@@ -35,6 +35,10 @@ int Person::nextId() const
     return _nextId;
 }
 
+void Person::setName(QString name)
+{
+    _name = name;
+}
 void Person::setNextId(int id)
 {
     _nextId = id;

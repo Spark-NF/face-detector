@@ -3,7 +3,7 @@
 #include "webcamdialog.h"
 #include "imagedialog.h"
 #include "addpersondialog.h"
-#include "addpicturedialog.h"
+#include "persondialog.h"
 #include <QFile>
 #include <QFileDialog>
 
@@ -25,13 +25,16 @@ MainWindow::MainWindow(QWidget *parent)
     }
     f.close();
 
+    editMapper = new QSignalMapper(this);
+    connect(editMapper, SIGNAL(mapped(int)), this, SLOT(editPerson(int)));
+
     for (Person *person : persons)
         tableAddPerson(person);
 
-    ui->tablePersons->verticalHeader()->setDefaultSectionSize(24);
     ui->tablePersons->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     ui->tablePersons->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tablePersons->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    ui->tablePersons->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
 }
 
 MainWindow::~MainWindow()
@@ -51,6 +54,19 @@ void MainWindow::openWebcamDialog()
     WebcamDialog *webcamDialog = new WebcamDialog(&persons, this);
     webcamDialog->show();
 }
+void MainWindow::editPerson(int id)
+{
+    Person *person = nullptr;
+    for (Person *p : persons)
+        if (p->id() == id)
+            person = p;
+    if (person == nullptr)
+        return;
+
+    PersonDialog *personDialog = new PersonDialog(person, &persons, this);
+    connect(personDialog, &PersonDialog::addedPicture, this, &MainWindow::addPictureDone);
+    personDialog->show();
+}
 
 void MainWindow::addPerson()
 {
@@ -62,13 +78,6 @@ void MainWindow::addPersonDone(Person *person)
 {
     persons.append(person);
     tableAddPerson(person);
-}
-void MainWindow::addPicture()
-{
-    QString file = QFileDialog::getOpenFileName(this);
-    AddPictureDialog *addPictureDialog = new AddPictureDialog(file, &persons, this);
-    connect(addPictureDialog, &AddPictureDialog::addPicture, this, &MainWindow::addPictureDone);
-    addPictureDialog->show();
 }
 void MainWindow::addPictureDone(Person *person, QString file)
 {
@@ -82,10 +91,16 @@ void MainWindow::tableAddPerson(Person *person)
     QTableWidgetItem *itemID = new QTableWidgetItem(QString::number(person->id()));
     itemID->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
+    QPushButton *buttonEdit = new QPushButton("Edit");
+    connect(buttonEdit, SIGNAL(clicked()), editMapper, SLOT(map()));
+    editMapper->setMapping(buttonEdit, person->id());
+    editButtons.append(buttonEdit);
+
     ui->tablePersons->insertRow(ui->tablePersons->rowCount());
     ui->tablePersons->setItem(ui->tablePersons->rowCount() - 1, 0, itemID);
     ui->tablePersons->setItem(ui->tablePersons->rowCount() - 1, 1, new QTableWidgetItem(person->name()));
     ui->tablePersons->setItem(ui->tablePersons->rowCount() - 1, 2, new QTableWidgetItem(QString::number(person->faces()->size())));
+    ui->tablePersons->setCellWidget(ui->tablePersons->rowCount() - 1, 3, buttonEdit);
 }
 
 void MainWindow::closeEvent(QCloseEvent*)

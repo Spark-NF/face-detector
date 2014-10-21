@@ -14,25 +14,26 @@ class AddPictureDialog : public QDialog
 {
     Q_OBJECT
 
-public:
-    explicit AddPictureDialog(QString file, QList<Person*> *persons, QWidget *parent = 0);
-    ~AddPictureDialog();
+    public:
+        explicit AddPictureDialog(QString file, Person *person, QList<Person*> *persons, QWidget *parent = 0);
+        ~AddPictureDialog();
 
-protected:
-    void emitPicture();
+    protected:
+        void emitPicture();
 
-signals:
-    void addPicture(Person *person, QString file);
+    signals:
+        void addPicture(Person *person, QString file);
 
-private:
-    Ui::AddPictureDialog *ui;
-    AspectRatioPixmapLabel *imageLabel;
-    cv::CascadeClassifier faceCascade;
-    cv::CascadeClassifier eyesCascade;
-    cv::CascadeClassifier eyesGlassesCascade;
-    QString _file;
-    QList<Person*> *_persons;
-    QRect _face;
+    private:
+        Ui::AddPictureDialog *ui;
+        AspectRatioPixmapLabel *imageLabel;
+        cv::CascadeClassifier faceCascade;
+        cv::CascadeClassifier eyesCascade;
+        cv::CascadeClassifier eyesGlassesCascade;
+        QString _file;
+        Person *_person;
+        QList<Person*> *_persons;
+        QRect _face;
 };
 
 #endif // ADDPICTUREDIALOG_H

@@ -12,6 +12,7 @@ class Person
         QString name() const;
         int nextId() const;
         QStringList *faces();
+        void setName(QString name);
         void setNextId(int id);
 
     private:

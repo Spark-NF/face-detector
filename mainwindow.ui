@@ -23,6 +23,9 @@
       <attribute name="verticalHeaderVisible">
        <bool>false</bool>
       </attribute>
+      <attribute name="verticalHeaderDefaultSectionSize">
+       <number>24</number>
+      </attribute>
       <column>
        <property name="text">
         <string>ID</string>
@@ -36,6 +39,11 @@
       <column>
        <property name="text">
         <string>Pictures</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Action</string>
        </property>
       </column>
      </widget>
@@ -59,13 +67,6 @@
        <widget class="QPushButton" name="pushButton_2">
         <property name="text">
          <string>Add person</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>Add picture</string>
         </property>
        </widget>
       </item>
@@ -194,22 +195,6 @@
     <hint type="destinationlabel">
      <x>221</x>
      <y>275</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addPicture()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>335</x>
-     <y>276</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>393</x>
-     <y>277</y>
     </hint>
    </hints>
   </connection>
