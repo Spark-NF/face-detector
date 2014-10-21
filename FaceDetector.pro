@@ -52,3 +52,11 @@ FORMS    += mainwindow.ui \
     addpicturedialog.ui \
     imagedialog.ui \
     persondialog.ui
+
+RC_FILE = icon.rc
+
+RESOURCES += \
+    resources.qrc
+
+OTHER_FILES += \
+    icon.rc

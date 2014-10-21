@@ -78,10 +78,14 @@ void PersonDialog::deleteImage(QString file)
 
 void PersonDialog::addPicture()
 {
-    QString file = QFileDialog::getOpenFileName(this);
-    AddPictureDialog *addPictureDialog = new AddPictureDialog(file, _person, _persons, this);
-    connect(addPictureDialog, &AddPictureDialog::addPicture, this, &PersonDialog::addPictureDone);
-    addPictureDialog->show();
+    //QString file = QFileDialog::getOpenFileName(this);
+    QStringList files = QFileDialog::getOpenFileNames(this);
+    for (QString file : files)
+    {
+        AddPictureDialog *addPictureDialog = new AddPictureDialog(file, _person, _persons, this);
+        connect(addPictureDialog, &AddPictureDialog::addPicture, this, &PersonDialog::addPictureDone);
+        addPictureDialog->show();
+    }
 }
 void PersonDialog::addPictureDone(Person *person, QString file)
 {

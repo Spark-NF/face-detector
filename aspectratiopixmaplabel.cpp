@@ -14,9 +14,9 @@ void AspectRatioPixmapLabel::setPixmap ( const QPixmap & p)
     QLabel::setPixmap(p);
 }
 
-int AspectRatioPixmapLabel::heightForWidth( int width ) const
+int AspectRatioPixmapLabel::heightForWidth(int width) const
 {
-    return ((qreal)pix.height()*width)/pix.width();
+    return ((qreal)pix.height() * width) / pix.width();
 }
 
 QSize AspectRatioPixmapLabel::sizeHint() const
@@ -40,7 +40,10 @@ void AspectRatioPixmapLabel::updateEyes()
     pix = original;
     QPainter *paint = new QPainter(&pix);
 
-    paint->setPen(QColor(255, 0, 0, 255));
+    QPen pen;
+    pen.setColor(QColor(255, 0, 0, 255));
+    pen.setWidth(pix.width() / 150);
+    paint->setPen(pen);
     paint->drawEllipse(_eye1, _r1, _r1);
     paint->drawEllipse(_eye2, _r2, _r2);
     paint->end();

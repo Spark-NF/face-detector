@@ -13,12 +13,16 @@
   <property name="windowTitle">
    <string>FaceDetector</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QTableWidget" name="tablePersons">
       <attribute name="horizontalHeaderVisible">
-       <bool>true</bool>
+       <bool>false</bool>
       </attribute>
       <attribute name="verticalHeaderVisible">
        <bool>false</bool>
@@ -148,7 +152,9 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionQuitter</sender>
@@ -189,8 +195,8 @@
    <slot>addPerson()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>261</x>
-     <y>283</y>
+     <x>389</x>
+     <y>289</y>
     </hint>
     <hint type="destinationlabel">
      <x>221</x>

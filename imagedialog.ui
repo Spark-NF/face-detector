@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Webcam</string>
+   <string>Image</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0">
    <property name="leftMargin">
@@ -88,7 +92,9 @@
  <tabstops>
   <tabstop>buttonClose</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonClose</sender>
