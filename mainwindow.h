@@ -27,7 +27,7 @@ class MainWindow : public QMainWindow
         void openImageDialog();
         void addPerson();
         void addPersonDone(Person *person);
-        void addPictureDone(Person *person, QString file);
+        void pictureCountChanged(Person *person);
         void editPerson(int id);
 
     private:

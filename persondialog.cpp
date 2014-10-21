@@ -47,18 +47,22 @@ void PersonDialog::tableAddPicture(QString file)
     deleteMapper->setMapping(buttonDelete, file);
     deleteButtons.append(buttonDelete);
 
-    ui->tablePictures->insertRow(ui->tablePictures->rowCount());
-    ui->tablePictures->setItem(ui->tablePictures->rowCount() - 1, 0, itemID);
-    ui->tablePictures->setItem(ui->tablePictures->rowCount() - 1, 1, new QTableWidgetItem(file));
-    ui->tablePictures->setCellWidget(ui->tablePictures->rowCount() - 1, 2, imageOriginal);
-    ui->tablePictures->setCellWidget(ui->tablePictures->rowCount() - 1, 3, imageModifed);
-    ui->tablePictures->setCellWidget(ui->tablePictures->rowCount() - 1, 4, buttonDelete);
+    int i = ui->tablePictures->rowCount();
+    ui->tablePictures->insertRow(i);
+    ui->tablePictures->setItem(i, 0, itemID);
+    ui->tablePictures->setItem(i, 1, new QTableWidgetItem(file));
+    ui->tablePictures->setCellWidget(i, 2, imageOriginal);
+    ui->tablePictures->setCellWidget(i, 3, imageModifed);
+    ui->tablePictures->setCellWidget(i, 4, buttonDelete);
+    ui->tablePictures->item(i, 0)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    ui->tablePictures->item(i, 1)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 }
 
 void PersonDialog::deleteImage(QString file)
 {
     QFile::remove("data/original/" + QString::number(_person->id()) + "/" + file);
     QFile::remove("data/modified/" + QString::number(_person->id()) + "/" + file);
+    _person->faces()->removeAll(file);
 
     for (int i = 0; i < ui->tablePictures->rowCount(); ++i)
     {
@@ -68,6 +72,8 @@ void PersonDialog::deleteImage(QString file)
             break;
         }
     }
+
+    emit pictureCountChanged(_person);
 }
 
 void PersonDialog::addPicture()
@@ -79,8 +85,9 @@ void PersonDialog::addPicture()
 }
 void PersonDialog::addPictureDone(Person *person, QString file)
 {
+    _person->faces()->append(file);
     tableAddPicture(file);
-    emit addedPicture(person, file);
+    emit pictureCountChanged(person);
 }
 
 void PersonDialog::closeEvent(QCloseEvent *e)

@@ -25,7 +25,7 @@ class PersonDialog : public QDialog
         void deleteImage(QString file);
 
     signals:
-        void addedPicture(Person *person, QString file);
+        void pictureCountChanged(Person *person);
 
     private:
         Ui::PersonDialog *ui;

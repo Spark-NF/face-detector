@@ -64,7 +64,7 @@ void MainWindow::editPerson(int id)
         return;
 
     PersonDialog *personDialog = new PersonDialog(person, &persons, this);
-    connect(personDialog, &PersonDialog::addedPicture, this, &MainWindow::addPictureDone);
+    connect(personDialog, &PersonDialog::pictureCountChanged, this, &MainWindow::pictureCountChanged);
     personDialog->show();
 }
 
@@ -79,11 +79,11 @@ void MainWindow::addPersonDone(Person *person)
     persons.append(person);
     tableAddPerson(person);
 }
-void MainWindow::addPictureDone(Person *person, QString file)
+void MainWindow::pictureCountChanged(Person *person)
 {
     for (int i = 0; i < ui->tablePersons->rowCount(); ++i)
         if (ui->tablePersons->item(i, 0)->text().toInt() == person->id())
-            ui->tablePersons->item(i, 2)->setText(QString::number(ui->tablePersons->item(i, 2)->text().toInt() + 1));
+            ui->tablePersons->item(i, 2)->setText(QString::number(person->faces()->size()));
 }
 
 void MainWindow::tableAddPerson(Person *person)
@@ -96,11 +96,15 @@ void MainWindow::tableAddPerson(Person *person)
     editMapper->setMapping(buttonEdit, person->id());
     editButtons.append(buttonEdit);
 
-    ui->tablePersons->insertRow(ui->tablePersons->rowCount());
-    ui->tablePersons->setItem(ui->tablePersons->rowCount() - 1, 0, itemID);
-    ui->tablePersons->setItem(ui->tablePersons->rowCount() - 1, 1, new QTableWidgetItem(person->name()));
-    ui->tablePersons->setItem(ui->tablePersons->rowCount() - 1, 2, new QTableWidgetItem(QString::number(person->faces()->size())));
-    ui->tablePersons->setCellWidget(ui->tablePersons->rowCount() - 1, 3, buttonEdit);
+    int i = ui->tablePersons->rowCount();
+    ui->tablePersons->insertRow(i);
+    ui->tablePersons->setItem(i, 0, itemID);
+    ui->tablePersons->setItem(i, 1, new QTableWidgetItem(person->name()));
+    ui->tablePersons->setItem(i, 2, new QTableWidgetItem(QString::number(person->faces()->size())));
+    ui->tablePersons->setCellWidget(i, 3, buttonEdit);
+    ui->tablePersons->item(i, 0)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    ui->tablePersons->item(i, 1)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    ui->tablePersons->item(i, 2)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 }
 
 void MainWindow::closeEvent(QCloseEvent*)

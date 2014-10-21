@@ -30,7 +30,7 @@ AddPictureDialog::AddPictureDialog(QString file, Person *person, QList<Person*> 
         if (faces.size() == 1)
         {
             _face = QRect(faces[0].x, faces[0].y, faces[0].width, faces[0].height);
-            cv::rectangle(image, cv::Point(_face.x(), _face.y()), cv::Point(_face.x() + _face.width(), _face.y() + _face.height()), cvScalar(0, 255, 0, 0), qMin(1, (int)round(image.cols / 200)), 8, 0);
+            cv::rectangle(image, cv::Point(_face.x(), _face.y()), cv::Point(_face.x() + _face.width(), _face.y() + _face.height()), cvScalar(0, 255, 0, 0), qMin(1, (int)round(image.cols / 150)), 8, 0);
 
             cv::Point2f eyeLeft, eyeRight;
             cv::Mat faceROI = frame_gray(faces[0]);
