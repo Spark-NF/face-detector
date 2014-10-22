@@ -67,14 +67,27 @@ void ImageDialog::updatePicture(QString file)
             cv::resize(face, face_resized, cv::Size(imageSize.width(), imageSize.height()), 1.0, 1.0, cv::INTER_CUBIC);
             int prediction = faceRecognizer->predict(face_resized);
 
+            auto col = CV_RGB(0, 255, 0);
+            if (_persons->at(prediction)->group() != nullptr)
+            {
+                col = CV_RGB(_persons->at(prediction)->group()->color().red(), _persons->at(prediction)->group()->color().green(), _persons->at(prediction)->group()->color().blue());
+                cv::putText(captureFrame,
+                            _persons->at(prediction)->group()->name().toStdString(),
+                            cv::Point(qMax(face_i.tl().x, 0), qMax(face_i.br().y + 15, 0)),
+                            cv::FONT_HERSHEY_PLAIN,
+                            1.0,
+                            col,
+                            1.0);
+            }
+
             cv::putText(captureFrame,
                         _persons->at(prediction)->name().toStdString(),
                         cv::Point(qMax(face_i.tl().x, 0), qMax(face_i.tl().y - 10, 0)),
                         cv::FONT_HERSHEY_PLAIN,
                         1.0,
-                        cvScalar(0, 255, 0, 0),
+                        col,
                         1.0);
-            cv::rectangle(captureFrame, face_i, cvScalar(0, 255, 0, 0), 1, 8, 0);
+            cv::rectangle(captureFrame, face_i, col, 1, 8, 0);
         }
 
         ui->imageLabel->setPixmap(cvMatToQPixmap(captureFrame));

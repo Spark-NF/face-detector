@@ -2,8 +2,8 @@
 #include <QDir>
 #include <QDebug>
 
-Person::Person(int id, QString name)
-    : _id(id), _name(name)
+Person::Person(int id, QString name, Group *group)
+    : _id(id), _name(name), _group(group)
 {
     QDir dir;
     if (dir.cd("data/original/" + QString::number(id)))
@@ -16,6 +16,9 @@ Person::Person(int id, QString name)
         if (id >= _nextId)
             _nextId = id + 1;
     }
+
+    if (_group != nullptr)
+        _group->persons()->append(this);
 }
 
 int Person::id() const
@@ -34,6 +37,10 @@ int Person::nextId() const
 {
     return _nextId;
 }
+Group *Person::group()
+{
+    return _group;
+}
 
 void Person::setName(QString name)
 {
@@ -42,4 +49,10 @@ void Person::setName(QString name)
 void Person::setNextId(int id)
 {
     _nextId = id;
+}
+void Person::setGroup(Group *group)
+{
+    _group->persons()->removeAll(this);
+    _group = group;
+    _group->persons()->append(this);
 }

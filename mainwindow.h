@@ -5,6 +5,7 @@
 #include <QSignalMapper>
 #include <QPushButton>
 #include "person.h"
+#include "group.h"
 
 namespace Ui {
     class MainWindow;
@@ -35,6 +36,7 @@ class MainWindow : public QMainWindow
         QList<Person*> persons;
         QList<QPushButton*> editButtons;
         QSignalMapper *editMapper;
+        QList<Group*> groups;
 };
 
 #endif // MAINWINDOW_H

@@ -5,9 +5,7 @@ release
 data/faces
 data/original
 data/modified
-data/faces.csv
-data/persons.csv
-data/pictures.csv
+data/*.csv
 *.pdb
 *.ilk
 *.manifest

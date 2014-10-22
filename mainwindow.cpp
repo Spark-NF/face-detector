@@ -6,11 +6,25 @@
 #include "persondialog.h"
 #include <QFile>
 #include <QFileDialog>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    QFile g("data/groups.csv");
+    g.open(QFile::ReadOnly | QFile::Text);
+    while (!g.atEnd())
+    {
+        QString line = g.readLine().trimmed();
+        QStringList infos = line.split(';');
+        if (infos.count() != 3)
+            continue;
+
+        groups.append(new Group(infos[0].toInt(), infos[1], QColor(infos[2])));
+    }
+    g.close();
 
     QFile f("data/persons.csv");
     f.open(QFile::ReadOnly | QFile::Text);
@@ -18,10 +32,17 @@ MainWindow::MainWindow(QWidget *parent)
     {
         QString line = f.readLine().trimmed();
         QStringList infos = line.split(';');
-        if (infos.count() != 2)
+        if (infos.count() == 2)
+            infos.append("0");
+        if (infos.count() != 3)
             continue;
 
-        persons.append(new Person(infos[0].toInt(), infos[1]));
+        Group *group = nullptr;
+        for (Group *gr : groups)
+            if (gr->id() == infos[2].toInt())
+                group = gr;
+
+        persons.append(new Person(infos[0].toInt(), infos[1], group));
     }
     f.close();
 
@@ -83,7 +104,7 @@ void MainWindow::pictureCountChanged(Person *person)
 {
     for (int i = 0; i < ui->tablePersons->rowCount(); ++i)
         if (ui->tablePersons->item(i, 0)->text().toInt() == person->id())
-            ui->tablePersons->item(i, 2)->setText(QString::number(person->faces()->size()));
+            ui->tablePersons->item(i, 3)->setText(QString::number(person->faces()->size()));
 }
 
 void MainWindow::tableAddPerson(Person *person)
@@ -100,11 +121,13 @@ void MainWindow::tableAddPerson(Person *person)
     ui->tablePersons->insertRow(i);
     ui->tablePersons->setItem(i, 0, itemID);
     ui->tablePersons->setItem(i, 1, new QTableWidgetItem(person->name()));
-    ui->tablePersons->setItem(i, 2, new QTableWidgetItem(QString::number(person->faces()->size())));
-    ui->tablePersons->setCellWidget(i, 3, buttonEdit);
+    ui->tablePersons->setItem(i, 2, new QTableWidgetItem(person->group() == nullptr ? "" : person->group()->name()));
+    ui->tablePersons->setItem(i, 3, new QTableWidgetItem(QString::number(person->faces()->size())));
+    ui->tablePersons->setCellWidget(i, 4, buttonEdit);
     ui->tablePersons->item(i, 0)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     ui->tablePersons->item(i, 1)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     ui->tablePersons->item(i, 2)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    ui->tablePersons->item(i, 3)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 }
 
 void MainWindow::closeEvent(QCloseEvent*)
@@ -112,6 +135,6 @@ void MainWindow::closeEvent(QCloseEvent*)
     QFile f("data/persons.csv");
     f.open(QFile::WriteOnly | QFile::Text);
     for (Person *person : persons)
-        f.write((QString::number(person->id()) + ";" + person->name() + "\n").toUtf8());
+        f.write((QString::number(person->id()) + ";" + person->name() + ";" + QString::number(person->group() == nullptr ? 0 : person->group()->id()) + "\n").toUtf8());
     f.close();
 }
