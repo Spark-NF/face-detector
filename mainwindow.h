@@ -30,6 +30,8 @@ class MainWindow : public QMainWindow
         void openImageDialog();
         void addPerson();
         void addPersonDone(Person *person);
+        void addGroup();
+        void addGroupDone(Group *group);
         void pictureCountChanged(Person *person);
         void editPerson(int id);
         void editGroup(int id);

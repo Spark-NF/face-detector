@@ -3,6 +3,7 @@
 #include "webcamdialog.h"
 #include "imagedialog.h"
 #include "addpersondialog.h"
+#include "addgroupdialog.h"
 #include "persondialog.h"
 #include <QFile>
 #include <QFileDialog>
@@ -116,7 +117,7 @@ void MainWindow::editGroup(int id)
 
 void MainWindow::addPerson()
 {
-    AddPersonDialog *addPersonDialog = new AddPersonDialog(&persons, this);
+    AddPersonDialog *addPersonDialog = new AddPersonDialog(&persons, &groups, this);
     connect(addPersonDialog, &AddPersonDialog::addPerson, this, &MainWindow::addPersonDone);
     addPersonDialog->show();
 }
@@ -125,6 +126,19 @@ void MainWindow::addPersonDone(Person *person)
     persons.append(person);
     tableAddPerson(person);
 }
+
+void MainWindow::addGroup()
+{
+    AddGroupDialog *addGroupDialog = new AddGroupDialog(&groups, this);
+    connect(addGroupDialog, &AddGroupDialog::addGroup, this, &MainWindow::addGroupDone);
+    addGroupDialog->show();
+}
+void MainWindow::addGroupDone(Group *group)
+{
+    groups.append(group);
+    tableAddGroup(group);
+}
+
 void MainWindow::pictureCountChanged(Person *person)
 {
     for (int i = 0; i < ui->tablePersons->rowCount(); ++i)

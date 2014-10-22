@@ -277,8 +277,8 @@
    <slot>addPerson()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>389</x>
-     <y>289</y>
+     <x>465</x>
+     <y>338</y>
     </hint>
     <hint type="destinationlabel">
      <x>221</x>
@@ -302,11 +302,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonAddGroup</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addGroup()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>446</x>
+     <y>328</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>484</x>
+     <y>326</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openWebcamDialog()</slot>
   <slot>addPicture()</slot>
   <slot>addPerson()</slot>
   <slot>openImageDialog()</slot>
+  <slot>addGroup()</slot>
  </slots>
 </ui>

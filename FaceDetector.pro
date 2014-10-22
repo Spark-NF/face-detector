@@ -46,7 +46,8 @@ SOURCES += main.cpp \
     aspectratiopixmaplabel.cpp \
     imagedialog.cpp \
     persondialog.cpp \
-    group.cpp
+    group.cpp \
+    addgroupdialog.cpp
 
 HEADERS  += mainwindow.h \
     webcamdialog.h \
@@ -57,14 +58,16 @@ HEADERS  += mainwindow.h \
     aspectratiopixmaplabel.h \
     imagedialog.h \
     persondialog.h \
-    group.h
+    group.h \
+    addgroupdialog.h
 
 FORMS    += mainwindow.ui \
     webcamdialog.ui \
     addpersondialog.ui \
     addpicturedialog.ui \
     imagedialog.ui \
-    persondialog.ui
+    persondialog.ui \
+    addgroupdialog.ui
 
 RC_FILE = icon.rc
 
