@@ -137,6 +137,9 @@ void MainWindow::tableAddPerson(Person *person)
 {
     QTableWidgetItem *itemID = new QTableWidgetItem(QString::number(person->id()));
     itemID->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    QTableWidgetItem *itemGroup = new QTableWidgetItem(person->group() == nullptr ? "" : person->group()->name());
+    if (person->group() != nullptr)
+        itemGroup->setForeground(QBrush(person->group()->color()));
 
     QPushButton *buttonEdit = new QPushButton("Edit");
     connect(buttonEdit, SIGNAL(clicked()), editMapper, SLOT(map()));
@@ -147,7 +150,7 @@ void MainWindow::tableAddPerson(Person *person)
     ui->tablePersons->insertRow(i);
     ui->tablePersons->setItem(i, 0, itemID);
     ui->tablePersons->setItem(i, 1, new QTableWidgetItem(person->name()));
-    ui->tablePersons->setItem(i, 2, new QTableWidgetItem(person->group() == nullptr ? "" : person->group()->name()));
+    ui->tablePersons->setItem(i, 2, itemGroup);
     ui->tablePersons->setItem(i, 3, new QTableWidgetItem(QString::number(person->faces()->size())));
     ui->tablePersons->setCellWidget(i, 4, buttonEdit);
     ui->tablePersons->item(i, 0)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
