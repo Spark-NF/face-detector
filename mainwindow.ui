@@ -97,6 +97,17 @@
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <widget class="QTableWidget" name="tableGroups">
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderDefaultSectionSize">
+           <number>24</number>
+          </attribute>
+          <column>
+           <property name="text">
+            <string>ID</string>
+           </property>
+          </column>
           <column>
            <property name="text">
             <string>Name</string>

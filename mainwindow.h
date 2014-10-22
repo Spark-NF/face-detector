@@ -22,6 +22,7 @@ class MainWindow : public QMainWindow
 
     protected:
         void tableAddPerson(Person *person);
+        void tableAddGroup(Group *group);
 
     public slots:
         void openWebcamDialog();
@@ -30,12 +31,13 @@ class MainWindow : public QMainWindow
         void addPersonDone(Person *person);
         void pictureCountChanged(Person *person);
         void editPerson(int id);
+        void editGroup(int id);
 
     private:
         Ui::MainWindow *ui;
         QList<Person*> persons;
-        QList<QPushButton*> editButtons;
-        QSignalMapper *editMapper;
+        QList<QPushButton*> editButtons, editGroupButtons;
+        QSignalMapper *editMapper, *editGroupMapper;
         QList<Group*> groups;
 };
 

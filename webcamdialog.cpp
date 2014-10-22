@@ -43,7 +43,7 @@ WebcamDialog::WebcamDialog(QList<Person*> *persons, QWidget *parent)
 
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &WebcamDialog::updatePicture);
-    timer->start(33);
+    timer->start(50);
 }
 
 WebcamDialog::~WebcamDialog()
@@ -95,9 +95,9 @@ void WebcamDialog::toggleRecord()
     {
         int frame_width = captureDevice.get(CV_CAP_PROP_FRAME_WIDTH);
         int frame_height = captureDevice.get(CV_CAP_PROP_FRAME_HEIGHT);
-        _record = cv::VideoWriter("out.avi", CV_FOURCC('i','Y','U','V'), 20, cv::Size(frame_width, frame_height), true);
+        _record = cv::VideoWriter("out.avi", CV_FOURCC('i','Y','U','V'), (int)(1000 / ui->spinInterval->value()), cv::Size(frame_width, frame_height), true);
         if (!_record.isOpened())
-            _record = cv::VideoWriter("out.avi", -1, 20, cv::Size(frame_width, frame_height), true);
+            _record = cv::VideoWriter("out.avi", -1, (int)(1000 / ui->spinInterval->value()), cv::Size(frame_width, frame_height), true);
         if (_record.isOpened())
         {
             _recording = true;

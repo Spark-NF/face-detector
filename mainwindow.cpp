@@ -56,6 +56,19 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tablePersons->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tablePersons->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
     ui->tablePersons->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
+    ui->tablePersons->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
+
+    editGroupMapper = new QSignalMapper(this);
+    connect(editGroupMapper, SIGNAL(mapped(int)), this, SLOT(editGroup(int)));
+
+    for (Group *group : groups)
+        tableAddGroup(group);
+
+    ui->tableGroups->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    ui->tableGroups->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    ui->tableGroups->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    ui->tableGroups->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
+    ui->tableGroups->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
 }
 
 MainWindow::~MainWindow()
@@ -87,6 +100,19 @@ void MainWindow::editPerson(int id)
     PersonDialog *personDialog = new PersonDialog(person, &persons, this);
     connect(personDialog, &PersonDialog::pictureCountChanged, this, &MainWindow::pictureCountChanged);
     personDialog->show();
+}
+void MainWindow::editGroup(int id)
+{
+    Group *group = nullptr;
+    for (Group *g : groups)
+        if (g->id() == id)
+            group = g;
+    if (group == nullptr)
+        return;
+
+    /*PersonDialog *personDialog = new PersonDialog(persons.at(0), &persons, this);
+    connect(personDialog, &PersonDialog::pictureCountChanged, this, &MainWindow::pictureCountChanged);
+    personDialog->show();*/
 }
 
 void MainWindow::addPerson()
@@ -129,9 +155,39 @@ void MainWindow::tableAddPerson(Person *person)
     ui->tablePersons->item(i, 2)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     ui->tablePersons->item(i, 3)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 }
+void MainWindow::tableAddGroup(Group *group)
+{
+    QTableWidgetItem *itemID = new QTableWidgetItem(QString::number(group->id()));
+    itemID->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    QTableWidgetItem *itemColor = new QTableWidgetItem(group->color().name());
+    itemColor->setForeground(QBrush(group->color()));
+
+    QPushButton *buttonEdit = new QPushButton("Edit");
+    connect(buttonEdit, SIGNAL(clicked()), editMapper, SLOT(map()));
+    editMapper->setMapping(buttonEdit, group->id());
+    editButtons.append(buttonEdit);
+
+    int i = ui->tableGroups->rowCount();
+    ui->tableGroups->insertRow(i);
+    ui->tableGroups->setItem(i, 0, itemID);
+    ui->tableGroups->setItem(i, 1, new QTableWidgetItem(group->name()));
+    ui->tableGroups->setItem(i, 2, itemColor);
+    ui->tableGroups->setItem(i, 3, new QTableWidgetItem(QString::number(group->persons()->size())));
+    ui->tableGroups->setCellWidget(i, 4, buttonEdit);
+    ui->tableGroups->item(i, 0)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    ui->tableGroups->item(i, 1)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    ui->tableGroups->item(i, 2)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    ui->tableGroups->item(i, 3)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+}
 
 void MainWindow::closeEvent(QCloseEvent*)
 {
+    QFile g("data/groups.csv");
+    g.open(QFile::WriteOnly | QFile::Text);
+    for (Group *group : groups)
+        g.write((QString::number(group->id()) + ";" + group->name() + ";" + group->color().name() + "\n").toUtf8());
+    g.close();
+
     QFile f("data/persons.csv");
     f.open(QFile::WriteOnly | QFile::Text);
     for (Person *person : persons)
