@@ -6,8 +6,8 @@
 #include <QMessageBox>
 #include <QDir>
 
-AddPictureDialog::AddPictureDialog(QString file, Person *person, QList<Person*> *persons, QWidget *parent)
-    : QDialog(parent), ui(new Ui::AddPictureDialog), _file(file), _person(person), _persons(persons)
+AddPictureDialog::AddPictureDialog(QString file, Person *person, QWidget *parent)
+    : QDialog(parent), ui(new Ui::AddPictureDialog), _file(file), _person(person)
 {
     setModal(true);
     ui->setupUi(this);

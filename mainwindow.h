@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSignalMapper>
 #include <QPushButton>
+#include <QCloseEvent>
 #include "person.h"
 #include "group.h"
 

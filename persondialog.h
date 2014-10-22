@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QSignalMapper>
 #include "person.h"
+#include "group.h"
 
 namespace Ui {
     class PersonDialog;
@@ -14,15 +15,15 @@ class PersonDialog : public QDialog
     Q_OBJECT
 
     public:
-        explicit PersonDialog(Person *person, QList<Person*> *persons, QWidget *parent = 0);
+        explicit PersonDialog(Person *person, QList<Group*> *groups, QWidget *parent = 0);
         ~PersonDialog();
-        void closeEvent(QCloseEvent *e);
 
     public slots:
         void addPicture();
         void addPictureDone(Person *person, QString file);
         void tableAddPicture(QString file);
         void deleteImage(QString file);
+        void accept();
 
     signals:
         void pictureCountChanged(Person *person);
@@ -30,7 +31,7 @@ class PersonDialog : public QDialog
     private:
         Ui::PersonDialog *ui;
         Person *_person;
-        QList<Person*> *_persons;
+        QList<Group*> *_groups;
         QList<QPushButton*> deleteButtons;
         QSignalMapper *deleteMapper;
 };

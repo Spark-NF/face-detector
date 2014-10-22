@@ -6,7 +6,6 @@
 #include "persondialog.h"
 #include <QFile>
 #include <QFileDialog>
-#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -97,7 +96,7 @@ void MainWindow::editPerson(int id)
     if (person == nullptr)
         return;
 
-    PersonDialog *personDialog = new PersonDialog(person, &persons, this);
+    PersonDialog *personDialog = new PersonDialog(person, &groups, this);
     connect(personDialog, &PersonDialog::pictureCountChanged, this, &MainWindow::pictureCountChanged);
     personDialog->show();
 }
@@ -129,8 +128,16 @@ void MainWindow::addPersonDone(Person *person)
 void MainWindow::pictureCountChanged(Person *person)
 {
     for (int i = 0; i < ui->tablePersons->rowCount(); ++i)
+    {
         if (ui->tablePersons->item(i, 0)->text().toInt() == person->id())
+        {
+            ui->tablePersons->item(i, 1)->setText(person->name());
+            ui->tablePersons->item(i, 2)->setText(person->group() == nullptr ? "" : person->group()->name());
+            if (person->group() != nullptr)
+                ui->tablePersons->item(i, 2)->setForeground(QBrush(person->group()->color()));
             ui->tablePersons->item(i, 3)->setText(QString::number(person->faces()->size()));
+        }
+    }
 }
 
 void MainWindow::tableAddPerson(Person *person)
@@ -183,7 +190,7 @@ void MainWindow::tableAddGroup(Group *group)
     ui->tableGroups->item(i, 3)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 }
 
-void MainWindow::closeEvent(QCloseEvent*)
+void MainWindow::closeEvent(QCloseEvent *e)
 {
     QFile g("data/groups.csv");
     g.open(QFile::WriteOnly | QFile::Text);
@@ -196,4 +203,6 @@ void MainWindow::closeEvent(QCloseEvent*)
     for (Person *person : persons)
         f.write((QString::number(person->id()) + ";" + person->name() + ";" + QString::number(person->group() == nullptr ? 0 : person->group()->id()) + "\n").toUtf8());
     f.close();
+
+    e->accept();
 }

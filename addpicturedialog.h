@@ -15,7 +15,7 @@ class AddPictureDialog : public QDialog
     Q_OBJECT
 
     public:
-        explicit AddPictureDialog(QString file, Person *person, QList<Person*> *persons, QWidget *parent = 0);
+        explicit AddPictureDialog(QString file, Person *person, QWidget *parent = 0);
         ~AddPictureDialog();
 
     protected:
@@ -32,7 +32,6 @@ class AddPictureDialog : public QDialog
         cv::CascadeClassifier eyesGlassesCascade;
         QString _file;
         Person *_person;
-        QList<Person*> *_persons;
         QRect _face;
 };
 

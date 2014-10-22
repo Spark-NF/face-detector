@@ -4,10 +4,11 @@
 #include <QFileDialog>
 #include <QDebug>
 
-PersonDialog::PersonDialog(Person *person, QList<Person*> *persons, QWidget *parent)
-    : QDialog(parent), ui(new Ui::PersonDialog), _person(person), _persons(persons)
+PersonDialog::PersonDialog(Person *person, QList<Group*> *groups, QWidget *parent)
+    : QDialog(parent), ui(new Ui::PersonDialog), _person(person), _groups(groups)
 {
     ui->setupUi(this);
+    setModal(true);
 
     ui->lineId->setText(QString::number(person->id()));
     ui->lineName->setText(person->name());
@@ -23,6 +24,11 @@ PersonDialog::PersonDialog(Person *person, QList<Person*> *persons, QWidget *par
 
     for (QString file : *person->faces())
         tableAddPicture(file);
+
+    for (Group *group : *groups)
+        ui->comboGroup->addItem(group->name(), group->id());
+    if (person->group() != nullptr)
+        ui->comboGroup->setCurrentIndex(ui->comboGroup->findData(person->group()->id()));
 }
 
 PersonDialog::~PersonDialog()
@@ -82,7 +88,7 @@ void PersonDialog::addPicture()
     QStringList files = QFileDialog::getOpenFileNames(this);
     for (QString file : files)
     {
-        AddPictureDialog *addPictureDialog = new AddPictureDialog(file, _person, _persons, this);
+        AddPictureDialog *addPictureDialog = new AddPictureDialog(file, _person, this);
         connect(addPictureDialog, &AddPictureDialog::addPicture, this, &PersonDialog::addPictureDone);
         addPictureDialog->show();
     }
@@ -94,8 +100,16 @@ void PersonDialog::addPictureDone(Person *person, QString file)
     emit pictureCountChanged(person);
 }
 
-void PersonDialog::closeEvent(QCloseEvent *e)
+void PersonDialog::accept()
 {
+    Group *group = nullptr;
+    for (Group *gr : *_groups)
+        if (gr->id() == ui->comboGroup->currentData())
+            group = gr;
+
+    _person->setGroup(group);
     _person->setName(ui->lineName->text());
-    QDialog::closeEvent(e);
+    emit pictureCountChanged(_person);
+
+    QDialog::accept();
 }

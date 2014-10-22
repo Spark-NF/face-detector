@@ -52,7 +52,10 @@ void Person::setNextId(int id)
 }
 void Person::setGroup(Group *group)
 {
-    _group->persons()->removeAll(this);
+    if (_group != nullptr)
+        _group->persons()->removeAll(this);
+
     _group = group;
-    _group->persons()->append(this);
+    if (_group != nullptr)
+        _group->persons()->append(this);
 }
