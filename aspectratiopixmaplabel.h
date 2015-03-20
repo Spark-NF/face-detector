@@ -9,7 +9,7 @@ class AspectRatioPixmapLabel : public QLabel
 {
     Q_OBJECT
 public:
-    explicit AspectRatioPixmapLabel(QWidget *parent = 0);
+	explicit AspectRatioPixmapLabel(QWidget *parent = 0, bool eyes = true);
     virtual int heightForWidth( int width ) const;
     virtual QSize sizeHint() const;
     void setEyes(QPoint eye1, int r1, QPoint eye2, int r2);
@@ -32,6 +32,7 @@ private:
     int _r1, _r2;
     int currEye;
     bool _changed;
+	bool _eyes;
 };
 
 #endif // ASPECTRATIOPIXMAPLABEL_H

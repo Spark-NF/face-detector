@@ -1,13 +1,13 @@
 #include "aspectratiopixmaplabel.h"
 #include <QPainter>
 
-AspectRatioPixmapLabel::AspectRatioPixmapLabel(QWidget *parent)
-    : QLabel(parent), currEye(0), _changed(false)
+AspectRatioPixmapLabel::AspectRatioPixmapLabel(QWidget *parent, bool eyes)
+	: QLabel(parent), currEye(0), _changed(false), _eyes(eyes)
 {
     this->setMinimumSize(1,1);
 }
 
-void AspectRatioPixmapLabel::setPixmap ( const QPixmap & p)
+void AspectRatioPixmapLabel::setPixmap (const QPixmap & p)
 {
     original = p;
     pix = p;
@@ -59,9 +59,9 @@ void AspectRatioPixmapLabel::resizeEvent(QResizeEvent*)
 
 void AspectRatioPixmapLabel::mouseReleaseEvent(QMouseEvent* e)
 {
-    if (e->button() == Qt::LeftButton
+	if (_eyes && (e->button() == Qt::LeftButton
             || e->button() == Qt::MiddleButton
-            || e->button() == Qt::RightButton)
+			|| e->button() == Qt::RightButton))
     {
         float ratio = qMax((float)pix.width() / width(), (float)pix.height() / height());
         int x = e->x() * ratio;

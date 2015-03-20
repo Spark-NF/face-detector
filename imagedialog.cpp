@@ -27,6 +27,9 @@ ImageDialog::ImageDialog(QString file, QList<Person*> *persons, QWidget *parent)
         faceRecognizer->train(images, labels);
     }
 
+	imageLabel = new AspectRatioPixmapLabel(this, false);
+	ui->verticalLayout->insertWidget(0, imageLabel, 2);
+
     faceCascade.load("data/haarcascade_frontalface_alt.xml");
     updatePicture(file);
 }
@@ -39,7 +42,7 @@ ImageDialog::~ImageDialog()
 void ImageDialog::save()
 {
     QString file = QFileDialog::getSaveFileName(this);
-    ui->imageLabel->pixmap()->save(file);
+	imageLabel->pixmap()->save(file);
 }
 void ImageDialog::load()
 {
@@ -90,6 +93,6 @@ void ImageDialog::updatePicture(QString file)
             cv::rectangle(captureFrame, face_i, col, 1, 8, 0);
         }
 
-        ui->imageLabel->setPixmap(cvMatToQPixmap(captureFrame));
+		imageLabel->setPixmap(cvMatToQPixmap(captureFrame));
     }
 }

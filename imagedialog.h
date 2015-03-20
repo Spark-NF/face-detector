@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/contrib/contrib.hpp>
+#include "aspectratiopixmaplabel.h"
 #include "person.h"
 
 namespace Ui {
@@ -26,6 +27,7 @@ class ImageDialog : public QDialog
 
     private:
         Ui::ImageDialog *ui;
+		AspectRatioPixmapLabel *imageLabel;
         cv::CascadeClassifier faceCascade;
         cv::Ptr<cv::FaceRecognizer> faceRecognizer;
         QList<Person*> *_persons;
